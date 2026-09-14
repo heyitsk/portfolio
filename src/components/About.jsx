@@ -4,7 +4,7 @@ import GithubContributions from "./GithubContributions"
 
 export default function About() {
   return (
-    <section id="about" className="mx-auto max-w-5xl px-6 py-24">
+    <section id="about" className="mx-auto max-w-5xl px-6 py-16 sm:py-24">
       <SectionHeading index="01" title="about" />
 
       <div className="grid gap-12 md:grid-cols-5">

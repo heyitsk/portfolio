@@ -1,5 +1,7 @@
 import { useState } from "react"
 import { motion, AnimatePresence } from "motion/react"
+import ArchitectureFlow from "./ArchitectureFlow"
+import CodeSnippet from "./CodeSnippet"
 
 export default function ProjectCard({ project, index }) {
   const [expanded, setExpanded] = useState(false)
@@ -12,13 +14,15 @@ export default function ProjectCard({ project, index }) {
       transition={{ duration: 0.5, delay: index * 0.05 }}
       className="rounded-lg border border-border bg-surface p-6 transition-colors hover:border-border-hover sm:p-8"
     >
+      <ArchitectureFlow steps={project.flow} />
+
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <p className="font-mono text-xs text-text-dim">{project.year} · {project.status}</p>
           <h3 className="mt-1 text-2xl font-bold text-text">{project.name}</h3>
           <p className="mt-1 font-mono text-sm text-accent">{project.tagline}</p>
         </div>
-        <div className="flex gap-3 font-mono text-sm">
+        <div className="flex flex-wrap gap-2 font-mono text-sm sm:gap-3">
           {project.links.map((link) => (
             <a
               key={link.url}
@@ -42,6 +46,10 @@ export default function ProjectCard({ project, index }) {
             <p className="mt-0.5 text-xs leading-snug text-text-dim">{item.label}</p>
           </div>
         ))}
+      </div>
+
+      <div className="mt-6">
+        <CodeSnippet file={project.snippet.file} code={project.snippet.code} />
       </div>
 
       <div className="mt-6 flex flex-wrap gap-2">

@@ -4,7 +4,7 @@ import { SectionHeading } from "./About"
 
 export default function Skills() {
   return (
-    <section id="skills" className="mx-auto max-w-5xl px-6 py-24">
+    <section id="skills" className="mx-auto max-w-5xl px-6 py-16 sm:py-24">
       <SectionHeading index="04" title="skills" />
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">

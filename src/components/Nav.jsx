@@ -37,7 +37,7 @@ export default function Nav() {
           <span className="text-accent">~</span>/{profile.githubUsername}
         </a>
 
-        <ul className="hidden md:flex items-center gap-6">
+        <ul className="hidden lg:flex items-center gap-5 xl:gap-6">
           {SECTIONS.map((s) => (
             <li key={s.id}>
               <a
@@ -63,7 +63,7 @@ export default function Nav() {
 
         <button
           onClick={() => setOpen((v) => !v)}
-          className="md:hidden text-text-muted hover:text-accent"
+          className="lg:hidden text-text-muted hover:text-accent px-2 py-1 -mr-2"
           aria-label="Toggle menu"
         >
           {open ? "close" : "menu"}
@@ -71,13 +71,13 @@ export default function Nav() {
       </nav>
 
       {open && (
-        <ul className="md:hidden flex flex-col gap-1 px-6 pb-4 font-mono text-sm">
+        <ul className="lg:hidden flex flex-col gap-1 px-6 pb-4 font-mono text-sm">
           {SECTIONS.map((s) => (
             <li key={s.id}>
               <a
                 href={`#${s.id}`}
                 onClick={() => setOpen(false)}
-                className="block py-2 text-text-muted hover:text-accent"
+                className="block py-2.5 text-text-muted hover:text-accent"
               >
                 ./{s.label}
               </a>

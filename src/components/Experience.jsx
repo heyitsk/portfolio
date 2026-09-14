@@ -4,7 +4,7 @@ import { SectionHeading } from "./About"
 
 export default function Experience() {
   return (
-    <section id="experience" className="mx-auto max-w-5xl px-6 py-24">
+    <section id="experience" className="mx-auto max-w-5xl px-6 py-16 sm:py-24">
       <SectionHeading index="03" title="experience" />
 
       <div className="space-y-10">

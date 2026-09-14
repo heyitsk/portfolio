@@ -20,6 +20,23 @@ export const projects = [
     tech: ["Node.js", "Express", "MongoDB", "Redis", "BullMQ", "AWS SDK", "Socket.io", "React", "Vite"],
     links: [{ label: "GitHub", url: "https://github.com/heyitsk/GaganDrishti" }],
     status: "Source available",
+    flow: ["AWS Account", "Scanner (9 rules)", "BullMQ + Redis", "MongoDB (AES-256)", "Live Dashboard"],
+    snippet: {
+      file: "backend/src/config/bullmq.js",
+      code: `export const scanQueue = new Queue('scan-queue', {
+  connection: redisConnection,
+  defaultJobOptions: {
+    attempts: 3,                                    // retry failed jobs up to 3 times
+    backoff: { type: 'exponential', delay: 5000 },  // 5s -> 10s -> 20s
+    removeOnComplete: 10,
+    removeOnFail: 20,                               // keep last 20 for debugging
+  },
+})
+
+// Back off gradually: 500ms -> 1s -> 1.5s ... capped at 30s.
+// Without this, ioredis reconnects 100s of times/sec and floods logs.
+retryStrategy: (times) => Math.min(times * 500, 30_000)`,
+    },
   },
   {
     id: "autocrawler",
@@ -42,6 +59,26 @@ export const projects = [
     tech: ["Node.js", "React", "MongoDB", "Socket.IO", "Cheerio", "Puppeteer", "n8n"],
     links: [{ label: "GitHub", url: "https://github.com/heyitsk/autoCrawler" }],
     status: "Source available",
+    flow: ["Target URL", "Framework Detector", "HTTP or Puppeteer", "Cheerio Parser", "MongoDB + Webhooks"],
+    snippet: {
+      file: "backend/src/utils/crawlerDetector.js",
+      code: `const FRAMEWORK_PATTERNS = {
+  react: [/<div[^>]*id=["']root["']/i, /__REACT_/, /_next\\/static/],
+  vue: [/<div[^>]*id=["']app["']/i, /Vue\\./, /__NUXT__/],
+  angular: [/ng-app/i, /ng-version/i],
+  nextjs: [/__NEXT_DATA__/, /_next\\/static/],
+}
+
+function detectFramework(html) {
+  for (const [framework, patterns] of Object.entries(FRAMEWORK_PATTERNS)) {
+    for (const pattern of patterns) {
+      if (pattern.test(html)) return framework   // regex hit -> needs Puppeteer
+    }
+  }
+  // no pattern matched -> plain HTML, a lightweight fetch is enough
+  return null
+}`,
+    },
   },
   {
     id: "insightiq",
@@ -67,5 +104,29 @@ export const projects = [
       { label: "Backend", url: "https://github.com/heyitsk/insight_backend" },
     ],
     status: "Source available",
+    flow: ["Natural Language Query", "Gemini 2.5 Flash", "SQL Validator", "PostgreSQL", "Auto Chart"],
+    snippet: {
+      file: "controllers/chatController.js",
+      code: `let sqlQuery = await askGeminiSQL(sqlPrompt)
+let attempt = 0
+
+while (attempt < maxAttempts) {
+  try {
+    const result = await pool.query(sqlQuery)   // actually run it, not just parse it
+    if (result.rows) break
+  } catch (sqlError) {
+    attempt++
+    if (attempt < maxAttempts) {
+      // hand the DB's own error back to Gemini and ask it to fix its SQL
+      sqlQuery = await validateAndImproveSQL(sqlQuery, schemaInfo, sqlError.message)
+    } else {
+      return res.status(400).json({
+        error: \`SQL execution failed after \${maxAttempts} attempts\`,
+        sql: sqlQuery,
+      })
+    }
+  }
+}`,
+    },
   },
 ]

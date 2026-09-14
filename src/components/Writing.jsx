@@ -5,7 +5,7 @@ import { SectionHeading } from "./About"
 
 export default function Writing() {
   return (
-    <section id="writing" className="mx-auto max-w-5xl px-6 py-24">
+    <section id="writing" className="mx-auto max-w-5xl px-6 py-16 sm:py-24">
       <SectionHeading index="05" title="writing" />
 
       <p className="mb-10 max-w-2xl text-base leading-relaxed text-text-muted">{writingIntro}</p>

@@ -11,7 +11,7 @@ const LINKS = [
 
 export default function Contact() {
   return (
-    <section id="contact" className="mx-auto max-w-5xl px-6 py-24">
+    <section id="contact" className="mx-auto max-w-5xl px-6 py-16 sm:py-24">
       <SectionHeading index="06" title="contact" />
 
       <motion.div
